@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 // function imports
 import RoundChats from '../common/RoundChats';
 
-function RoundInteractivePreprocessing({chatList, onSubmitPreprocessQuery, preprocessProperties, onClickPreprocessButton}) {
+function RoundInteractivePreprocessing({chatList, onSubmitPreprocessQuery, preprocessProperties, onClickPreprocessButton, onClickCustomizeButton}) {
     const [query, setQuery] = useState("")
     
     const onChangeQuery = (event) => {
@@ -54,7 +54,8 @@ function RoundInteractivePreprocessing({chatList, onSubmitPreprocessQuery, prepr
                     </div>
                 </div>
                 <div className='roundInteractivePreprocessing__preprocessButton'>
-                    <Button className='point1_background' onClick={onClickPreprocessButton}>Preprocess & Download</Button>
+                    <Button className='point1_background' onClick={onClickCustomizeButton}>Create Pipeline</Button>
+                    {/* <Button className='point1_background' onClick={onClickCustomizeButton}>Customize</Button> */}
                 </div>
             </div>
         </div>

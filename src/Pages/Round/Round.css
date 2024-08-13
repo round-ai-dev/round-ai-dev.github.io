@@ -224,7 +224,7 @@
     position: absolute;
     right: 15px;
     top: 15px;
-    transition: opacity 100ms ease-in-out 1000ms;
+    transition: opacity 100ms ease-in-out 0ms;
     display: flex;
     gap: 5px;
 }

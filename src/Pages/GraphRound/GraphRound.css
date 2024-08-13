@@ -1,0 +1,9 @@
+/* GraphComponent.css */
+.graph-canvas {
+    width: 100vh;
+    height: 600;
+    border: 2px solid green;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+  }
+  

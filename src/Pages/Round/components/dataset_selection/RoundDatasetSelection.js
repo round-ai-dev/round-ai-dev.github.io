@@ -13,6 +13,7 @@ function RoundDatasetSelection({stage, selections, searchHistory, searchChats, o
                     selections ? selections.map(index => {
                         const i = index[0];
                         const j = index[1];
+
                         const selection = searchChats[i]["datasets"][j];
                         return (
                             <div className="RoundDatasetSelection__selection">
@@ -20,6 +21,9 @@ function RoundDatasetSelection({stage, selections, searchHistory, searchChats, o
                             </div>
                         );
                     }) : ""
+                }
+                {
+                    console.log(searchChats)
                 }
             </div>
             <div className={`RoundDatasetSelection__history ${stage>=1 ? "RoundDatasetSelection__history--fullScreen" : "RoundDatasetSelection__history--smallScreen"}`}>

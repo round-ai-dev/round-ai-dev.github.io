@@ -66,7 +66,7 @@
 
 .roundInteractivePreprocessing__preprocessProperties {
     width: 400px;
-    height: 500px;
+    height: 600px;
     border-radius: 15px;
     padding: 10px 15px;
     box-sizing: border-box;
@@ -74,7 +74,13 @@
     flex-direction: column;
     gap: 20px;
 }
-
+.roundInteractivePreprocessing__preprocessButton {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    border: 1px solid #262626;
+    
+}
 .roundInteractivePreprocessing__preprocessButton > .MuiButton-root {
     font-size: 20px;
     color: white;

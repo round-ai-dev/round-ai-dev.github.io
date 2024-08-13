@@ -62,7 +62,7 @@ function RoundChats({chatList, onClickDataset}) {
                         return <AssistantChat content={chat["content"]}/>
                     }
                     else if(chat["role"] === "search") {
-                        return <SearchChat query={chat["query"]} content={chat["content"]} datasets={chat["datasets"]} onClickDataset={(datasetIndex) => onClickDataset(chatIndex, datasetIndex)} />
+                        return <SearchChat query={chat["tmp"]} content={chat["content"]} datasets={chat["datasets"]} onClickDataset={(datasetIndex) => onClickDataset(chatIndex, datasetIndex)} />
                     }
                     else {
                         return <p>error</p>

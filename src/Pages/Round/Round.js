@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./Round.css";
-
+import { useNavigate } from 'react-router-dom';
 // mui imports
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import RoundDatasetSelection from './components/dataset_selection/RoundDatasetSelection';
@@ -192,6 +192,8 @@ function Round() {
     const [selections, setSelections] = useState([]);
     const [preprocessProperties, setPreprocessProperties] = useState("");
 
+    const navigate = useNavigate(); // useNavigate hook to navigate programmatically
+
     useEffect(() => {
         getSearchChats()
         getPreprocessChats()
@@ -217,7 +219,7 @@ function Round() {
     // interactive search functions
     const postSearchQuery = async (query) => {
         try {
-            const response = await fetch("http://147.46.121.199:3000/query", {
+            const response = await fetch("http://127.0.0.1:3003/query", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -231,10 +233,10 @@ function Round() {
     
             const data = await response.json();
             console.log(data)
-           
+            
             // setSearchChats(prevChats => [...prevChats, query])
             setSearchChats(prevChats => [...prevChats, data]); //여기가 data.response였슴
-            const searchChatsTemp = [...searchChats, query, data]
+            const searchChatsTemp = [...searchChats, data]
             setValues(searchChatsTemp)
 
             // return data;
@@ -245,7 +247,7 @@ function Round() {
     } // TODO: need code to interact with backend
     const getSearchChats = async () => {
         try {
-            const response = await fetch("http://147.46.121.199:3000/query", {
+            const response = await fetch("http://127.0.0.1:3003/query", {
                 method: "GET",
             });
     
@@ -279,7 +281,7 @@ function Round() {
                 selectionIds.push(searchChats[chatIndex]["datasets"][datasetIndex]["_id"])
             }
 
-            await fetch("http://147.46.121.199:3000/selections", {
+            await fetch("http://147.46.121.38:3003/selections", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -292,6 +294,9 @@ function Round() {
     }
 
     const onClickDataset = (chatIndex, datasetIndex) => {
+        console.log(searchChats)
+        console.log(chatIndex)
+        console.log(datasetIndex)
         const searchChatsTemp = searchChats
         searchChatsTemp[chatIndex]["datasets"][datasetIndex]["selected"] = !searchChats[chatIndex]["datasets"][datasetIndex]["selected"]
         setSearchChats(searchChatsTemp)
@@ -332,7 +337,7 @@ function Round() {
     // interactive preprocessing functions
     const postPreprocessInput = async (query) => {
         try {
-            const response = await fetch("http://147.46.121.199:3000/preprocess", {
+            const response = await fetch("http://147.46.121.38:3003/preprocess", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -360,7 +365,7 @@ function Round() {
     } // TODO: need code to interact with backend
     const getPreprocessChats = async () => {
         try {
-            const response = await fetch("http://147.46.121.199:3000/preprocess", {
+            const response = await fetch("http://147.46.121.38:3003/preprocess", {
                 method: "GET",
             });
     
@@ -386,7 +391,7 @@ function Round() {
 
     const onClickPreprocessButton = async() => {
         try {
-            const response = await fetch("http://147.46.121.199:3000/download");
+            const response = await fetch("http://147.46.121.38:3003/download");
             if (!response.ok) {
                 throw new Error("Network response was not ok " + response.statusText);
             }
@@ -402,7 +407,11 @@ function Round() {
         } catch (error) {
             console.error("Error fetching download file:", error);
         }
-    
+    }
+    const onClickCustomizeButton = async  () => {
+        // navigate('/graph'); // Navigate to the /graph route
+        setTimeout(()=>{window.location.href = 'http://127.0.0.1:8008';}, 2000)
+        
     }
 
     return (
@@ -433,10 +442,19 @@ function Round() {
                         <KeyboardDoubleArrowLeftIcon/>
                         <p>Previous Step</p>
                     </div>
-                    <div onClick={start && stage >= 0 && stage < 2 ? onClickNextPage : () => {}} className={`base1_color round__nextPage ${start && stage <= 1 ? "round__nextPage--show" : "round__nextPage--hide"}`}>
+                    <div onClick={() => {
+                                if (start && stage >= 0 && stage < 2) {
+                                onClickNextPage();
+                                setValues(searchChats); // Call setValue() here
+                                }
+                            }}className={`base1_color round__nextPage ${start && stage <= 1 ? "round__nextPage--show" : "round__nextPage--hide"}`}>
                         <p>Next Step</p>
                         <KeyboardDoubleArrowRightIcon/>
                     </div>
+                    {stage == 2 ? <div onClick={onClickCustomizeButton} className={`base1_color round__nextPage ${stage == 2? "round__nextPage--show" : "round__nextPage--hide"}`}>
+                        <p>Customize</p>
+                        <KeyboardDoubleArrowRightIcon/>
+                    </div> : <div></div>}
                 </div>
 
                 <div className='round__interactiveSearch'>
@@ -448,7 +466,7 @@ function Round() {
                 </div>
 
                 <div className={`round__interactivePreprocessing base2_background ${stage===2 ? "round__interactivePreprocessing--show" : "round__interactivePreprocessing--hide"}`}>
-                    <RoundInteractivePreprocessing chatList={preprocessChats} onSubmitPreprocessQuery={onSubmitPreprocessQuery} preprocessProperties={preprocessProperties} onClickPreprocessButton={onClickPreprocessButton}/>
+                    <RoundInteractivePreprocessing chatList={preprocessChats} onSubmitPreprocessQuery={onSubmitPreprocessQuery} preprocessProperties={preprocessProperties} onClickPreprocessButton={onClickPreprocessButton} onClickCustomizeButton={onClickCustomizeButton}/>
                 </div>
             </div>
         </div>
